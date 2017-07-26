@@ -14,18 +14,20 @@ get %r{/zynaps/rutor-filtered}, :provides => 'rss' do
 
   feed = RSS::Parser.parse(open("http://alt.rutor.info/rss.php?full=1"))
 
-  feed.items.delete_if do |item|
-    if meta = item.title.match(title_re)
-      titles = meta['titles'].split('/').map(&:strip)
-      year = meta['year'].to_i
-      label = meta['label']
-      versions = meta['versions'].split(/[, ]+/)
-      team = meta['team']
+  feed.items.keep_if do |item|
+    meta = item.title.match(title_re)
 
-      item.title = format("%s (%d) %s %s | %s", titles.join(' / '), year, label, team, versions.join(','))
+    next if not meta
 
-      next
-    end
+    titles = meta['titles'].split('/').map(&:strip)
+    year = meta['year'].to_i
+    label = meta['label']
+    versions = meta['versions'].split(/[, ]+/)
+    team = meta['team']
+
+    next if label =~ /(1080|720)p/
+
+    item.title = format("%s (%d) %s %s | %s", titles.join(' / '), year, label, team, versions.join(','))
 
     true
   end
