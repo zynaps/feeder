@@ -22,7 +22,7 @@ get %r{/zynaps/rutor-filtered}, :provides => 'rss' do
       versions = meta['versions'].split(/[, ]+/)
       team = meta['team']
 
-      item.title = format("%d %s | %s %s | %s", year, titles.join(' / '), team, label, versions.join(','))
+      item.title = format("%s (%d) %s %s | %s", titles.join(' / '), year, label, team, versions.join(','))
 
       next
     end
