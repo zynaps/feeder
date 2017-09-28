@@ -28,13 +28,17 @@ get %r{/zynaps/rutor-filtered}, :provides => 'rss' do
 
     next if label =~ /(1080|720)p/
 
-    cache = Redis.new
-    cache_key = "feeds:rutor-filtered:seen:%s:%d:%s" % [titles.last, year, versions.join(',')]
+    if team !~ /Scarabey/i
+      next if year < Time.now.year - 1
 
-    next if team !~ /Scarabey/i and cache.get(cache_key)
+      cache = Redis.new
+      cache_key = "feeds:rutor-filtered:seen:%s:%d:%s" % [titles.sort.last, year, versions.join(',')]
 
-    cache.set(cache_key, 1)
-    cache.expire(cache_key, 60 * 60 * 24 * 3)
+      next if cache.get(cache_key)
+
+      cache.set(cache_key, 1)
+      cache.expire(cache_key, 60 * 60 * 24 * 3)
+    end
 
     item.title = format("%s (%d) %s %s | %s", titles.join(' / '), year, label, team, versions.join(','))
 
