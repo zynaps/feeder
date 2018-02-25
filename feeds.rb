@@ -26,19 +26,18 @@ get %r{/zynaps/rutor-filtered}, :provides => 'rss' do
     versions = meta['versions'].split(/[, ]+/)
     team = meta['team']
 
-    next if label =~ /(1080|720)p/
+    next if label =~ /((1080|720)p?|-(AVC|HEVC))/
+
+    cache = Redis.new
+    cache_key = "feeds:rutor-filtered:seen:%s:%d:%s" % [titles.sort.last, year, versions.join(',')]
 
     if team !~ /Scarabey/i
-      next if year < Time.now.year - 1
-
-      cache = Redis.new
-      cache_key = "feeds:rutor-filtered:seen:%s:%d:%s" % [titles.sort.last, year, versions.join(',')]
-
+      next if year < Time.now.year - 2
       next if cache.get(cache_key)
-
-      cache.set(cache_key, 1)
-      cache.expire(cache_key, 60 * 60 * 24 * 3)
     end
+
+    cache.set(cache_key, 1)
+    cache.expire(cache_key, 60 * 60 * 24 * 3)
 
     item.title = format("%s (%d) %s %s | %s", titles.join(' / '), year, label, team, versions.join(','))
 
