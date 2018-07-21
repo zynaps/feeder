@@ -1,0 +1,28 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mini_portile2 (2.3.0)
+    mustermann (1.0.2)
+    nokogiri (1.8.4)
+      mini_portile2 (~> 2.3.0)
+    rack (2.0.5)
+    rack-protection (2.0.3)
+      rack
+    redis (4.0.1)
+    sinatra (2.0.3)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.3)
+      tilt (~> 2.0)
+    tilt (2.0.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  nokogiri
+  redis
+  sinatra
+
+BUNDLED WITH
+   1.16.3
