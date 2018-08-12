@@ -4,7 +4,7 @@ require 'nokogiri'
 require 'redis'
 require 'sinatra'
 
-get %r{/zynaps/rutor-filtered}, :provides => 'rss' do
+get %r{/rutor-filtered}, :provides => 'rss' do
   title_re = %r{
     (?<titles>.*)\s+
     \((?<year>\d+)\)\s+
@@ -68,16 +68,6 @@ get %r{/zynaps/rutor-filtered}, :provides => 'rss' do
     item.title = format("%3.1f/%d %s (%d) %s %s | %s", imdb_rating, imdb_votes, titles.join(' / '), year, label, team, versions.join(','))
 
     true
-  end
-
-  feed.to_s
-end
-
-get %r{/bogorad/(?<url>(mediagazer|techmeme)\.com/feed.xml)}, :provides => 'rss' do |url|
-  feed = RSS::Parser.parse(open("http://#{url}"))
-
-  feed.items.each do |item|
-    item.link = Nokogiri::HTML(item.description).xpath("//span/b/a/@href").to_s
   end
 
   feed.to_s
