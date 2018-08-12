@@ -2,6 +2,7 @@ require 'open-uri'
 require 'rss'
 require 'nokogiri'
 require 'redis'
+require 'redis-namespace'
 require 'sinatra'
 
 get %r{/rutor-filtered}, :provides => 'rss' do
@@ -24,15 +25,15 @@ get %r{/rutor-filtered}, :provides => 'rss' do
     imdb_id = (desc.at_xpath(imdb_xpath).text =~ /\/tt(\d+)\/?$/ ? $1.to_i : nil) rescue nil
     kpdb_id = (desc.at_xpath(kpdb_xpath).text =~ /\/film\/.*?-?(\d+)\/?$/ ? $1.to_i : nil) rescue nil
 
-    cache = Redis.new
+    cache = Redis::Namespace.new(:feeder, :redis => Redis.new)
 
     if imdb_id and kpdb_id
-      cache.hset("feeds:rutor-filtered:imdb_to_kpdb", imdb_id, kpdb_id)
-      cache.hset("feeds:rutor-filtered:kpdb_to_imdb", kpdb_id, imdb_id)
+      cache.hset("rutor-filtered:imdb_to_kpdb", imdb_id, kpdb_id)
+      cache.hset("rutor-filtered:kpdb_to_imdb", kpdb_id, imdb_id)
     elsif imdb_id
-      kpdb_id = cache.hget("feeds:rutor-filtered:imdb_to_kpdb", imdb_id)
+      kpdb_id = cache.hget("rutor-filtered:imdb_to_kpdb", imdb_id)
     elsif kpdb_id
-      imdb_id = cache.hget("feeds:rutor-filtered:kpdb_to_imdb", kpdb_id)
+      imdb_id = cache.hget("rutor-filtered:kpdb_to_imdb", kpdb_id)
     end
 
     meta = item.title.match(title_re)
@@ -47,7 +48,7 @@ get %r{/rutor-filtered}, :provides => 'rss' do
 
     next if label =~ /((1080|720)p?|-(AVC|HEVC))/
 
-    cache_key = "feeds:rutor-filtered:seen:%s:%d:%s" % [titles.sort.last, year, versions.join(',')]
+    cache_key = "rutor-filtered:seen:%s:%d:%s" % [titles.sort.last, year, versions.join(',')]
 
     if team !~ /Scarabey/i
       next if year < Time.now.year - 2
