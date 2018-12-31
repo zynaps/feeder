@@ -1,16 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    mini_portile2 (2.3.0)
+    json (2.1.0)
     mustermann (1.0.2)
-    nokogiri (1.8.4)
-      mini_portile2 (~> 2.3.0)
     rack (2.0.5)
     rack-protection (2.0.3)
       rack
     redis (4.0.1)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
+    rss (0.2.7)
     sinatra (2.0.3)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -22,9 +21,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nokogiri
+  json
   redis
   redis-namespace
+  rss
   sinatra
 
 BUNDLED WITH
