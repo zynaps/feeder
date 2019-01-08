@@ -26,6 +26,3 @@ DEPENDENCIES
   redis-namespace
   rss
   sinatra
-
-BUNDLED WITH
-   1.16.3
