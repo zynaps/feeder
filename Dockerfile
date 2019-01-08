@@ -9,6 +9,8 @@ RUN \
   set -xe && \
   bundle install --without development test
 
-EXPOSE 4567
+EXPOSE 4567/tcp
+
+ENV RACK_ENV="production"
 
 CMD ["ruby", "feeder.rb"]
