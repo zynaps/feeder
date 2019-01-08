@@ -10,7 +10,7 @@ get %r{/(?<feed>\w+)}, provides: 'atom' do |feed|
   atom = RSS::Maker.make('atom') do |maker|
     maker.channel.author = redis.get('author')
     maker.channel.title = redis.get('title')
-    maker.channel.updated = redis.get('updated')
+    maker.channel.updated = redis.get('updated') || Time.now.to_s
     maker.channel.about = redis.get('about')
 
     if redis.llen('entries') > 0
