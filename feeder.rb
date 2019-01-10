@@ -13,17 +13,15 @@ get %r{/(?<feed>\w+)}, provides: 'atom' do |feed|
     maker.channel.updated = redis.get('updated') || Time.now.to_s
     maker.channel.about = redis.get('about')
 
-    if redis.llen('entries') > 0
-      while (entry = redis.lpop('entries')) do
-        entry = JSON.parse(entry)
+    redis.lrange('entries', 0, 49).each do |entry|
+      entry = JSON.parse(entry)
 
-        maker.items.new_item do |item|
-          item.id = entry['id']
-          item.title = entry['title']
-          item.content.content = entry['content'] if entry['content']
-          item.link = entry['url']
-          item.updated = entry['pub_date']
-        end
+      maker.items.new_item do |item|
+        item.id = entry['id']
+        item.title = entry['title']
+        item.content.content = entry['content'] if entry['content']
+        item.link = entry['url']
+        item.updated = entry['pub_date']
       end
     end
   end
