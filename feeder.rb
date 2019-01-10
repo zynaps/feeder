@@ -5,7 +5,7 @@ require 'rss'
 require 'sinatra'
 
 get %r{/(?<feed>\w+)}, provides: 'atom' do |feed|
-  redis = Redis::Namespace.new("feeds:#{feed}", redis: Redis.new)
+  redis = Redis::Namespace.new("feeder:#{feed}", redis: Redis.new)
 
   atom = RSS::Maker.make('atom') do |maker|
     maker.channel.author = redis.get('author')
