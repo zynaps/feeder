@@ -1,5 +1,4 @@
-FROM ruby:alpine
-LABEL maintainer="Igor Vinokurov <zynaps@zynaps.ru>"
+FROM python:alpine
 
 WORKDIR /
 
@@ -7,10 +6,9 @@ COPY . ./
 
 RUN \
   set -xe && \
-  bundle install --without development test
+  apk add --no-cache libxml2-dev libxslt-dev && \
+  apk add --no-cache --virtual .build-deps build-base && \
+  pip3 install --no-cache-dir -r requirements.txt && \
+  apk del .build-deps
 
-EXPOSE 4567/tcp
-
-ENV RACK_ENV="production"
-
-CMD ["ruby", "feeder.rb"]
+CMD ["python3", "feeder.py"]
