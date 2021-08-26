@@ -1,21 +1,29 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    json (2.1.0)
-    mustermann (1.0.2)
-    rack (2.0.5)
-    rack-protection (2.0.3)
+    connection_pool (2.3.0)
+    json (2.6.2)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    rack (2.2.4)
+    rack-protection (3.0.2)
       rack
-    redis (4.0.1)
-    redis-namespace (1.6.0)
-      redis (>= 3.0.4)
-    rss (0.2.7)
-    sinatra (2.0.3)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.3)
+    redis (5.0.5)
+      redis-client (>= 0.9.0)
+    redis-client (0.11.1)
+      connection_pool
+    redis-namespace (1.9.0)
+      redis (>= 4)
+    rexml (3.2.5)
+    rss (0.2.9)
+      rexml
+    ruby2_keywords (0.0.5)
+    sinatra (3.0.2)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.2)
       tilt (~> 2.0)
-    tilt (2.0.8)
+    tilt (2.0.11)
 
 PLATFORMS
   ruby
@@ -26,3 +34,6 @@ DEPENDENCIES
   redis-namespace
   rss
   sinatra
+
+BUNDLED WITH
+   2.2.5
