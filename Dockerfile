@@ -7,7 +7,9 @@ COPY . ./
 
 RUN \
   set -xe && \
-  bundle install --without development test
+  apk add --no-cache --virtual .build-deps build-base && \
+  bundle install --without development test && \
+  apk del .build-deps
 
 EXPOSE 4567/tcp
 
