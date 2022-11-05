@@ -1,5 +1,4 @@
 FROM ruby:alpine
-LABEL maintainer="Igor Vinokurov <zynaps@zynaps.ru>"
 
 WORKDIR /
 
@@ -7,7 +6,7 @@ COPY . ./
 
 RUN \
   set -xe && \
-  apk add --no-cache --virtual .build-deps build-base && \
+  apk add --update --no-cache --virtual .build-deps build-base && \
   bundle install --without development test && \
   apk del .build-deps
 
