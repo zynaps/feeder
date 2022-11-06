@@ -4,6 +4,7 @@ gem 'json'
 gem 'redis'
 gem 'redis-namespace'
 gem 'rss'
+gem 'puma'
 gem 'sinatra'
 
 group :development do
