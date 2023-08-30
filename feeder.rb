@@ -21,7 +21,10 @@ get %r{/(?<feed>\w+)}, provides: "atom" do |feed|
       maker.items.new_item do |item|
         item.id = entry["id"]
         item.title = entry["title"]
-        item.content.content = entry["content"] if entry["content"]
+        if entry["content"]
+          item.content.content = entry["content"]
+          item.content.type = entry["content_type"] if entry["content_type"]
+        end
         item.link = entry["link"]
         item.updated = entry["updated"]
       end
