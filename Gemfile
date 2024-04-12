@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "json"
+gem "rackup"
 gem "redis"
 gem "redis-namespace"
 gem "rss"
